@@ -22,6 +22,13 @@ defmodule ExUnitExtended do
         )
       end
 
+      def test_assert_member(expected: expected, list: list, error_message: error_message) do
+        assert(
+          Enum.member?(list, expected),
+          "#{error_message}\nExpected Member\t: #{inspect(expected)}\nList\t\t: #{inspect(list)}"
+        )
+      end
+
       def test_assert_received(expected: expected, error_message: error_message) do
         assert_received(
           ^expected,
