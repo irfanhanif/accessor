@@ -4,23 +4,14 @@ defmodule Accessor.DeepPutTest do
   use ExUnit.Case
   use ExUnitExtended
 
-  def dummy_data_1 do
-    %{bio: %{name: %{first: "irfan", last: "hanif"}, age: 22}, position: "software engineer"}
-  end
-
-  def dummy_data_2 do
-    %{bio: %{name: %{first: "irfan", last: "hanif"}, age: 22}, position: ["software engineer", "junior architect"]}
-  end
-
-  def dummy_data_3 do
-    %{bio: %{name: %{first: "irfan", last: "hanif"}, age: 22}, 
-      position: [primary: "software engineer", secondary: "junior architect"]}
-  end
-
   test "deep_put/3 update a value of map in deep nested mixed type data" do
     given__(:dummy_data_1)
     |> when__(:deep_put_function_invoked_for_test_case_1)
     |> then__("It should matched", :output_of_test_case_1)
+  end
+
+  def dummy_data_1 do
+    %{bio: %{name: %{first: "irfan", last: "hanif"}, age: 22}, position: "software engineer"}
   end
 
   def deep_put_function_invoked_for_test_case_1(case_data) do
@@ -41,6 +32,10 @@ defmodule Accessor.DeepPutTest do
     |> then__("It should matched", :output_of_test_case_2)
   end
 
+  def dummy_data_2 do
+    %{bio: %{name: %{first: "irfan", last: "hanif"}, age: 22}, position: ["software engineer", "junior architect"]}
+  end
+
   def deep_put_function_invoked_for_test_case_2(case_data) do
     Accessor.deep_put(case_data, [:position, 1], "engineering manager")
   end
@@ -57,6 +52,11 @@ defmodule Accessor.DeepPutTest do
     given__(:dummy_data_3)
     |> when__(:deep_put_function_invoked_for_test_case_3)
     |> then__("It should matched", :output_of_test_case_3)
+  end
+
+  def dummy_data_3 do
+    %{bio: %{name: %{first: "irfan", last: "hanif"}, age: 22}, 
+      position: [primary: "software engineer", secondary: "junior architect"]}
   end
 
   def deep_put_function_invoked_for_test_case_3(case_data) do
