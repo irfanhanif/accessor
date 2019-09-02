@@ -81,7 +81,7 @@ defmodule Accessor.Validation do
     if is_binary(value) do
       :ok
     else
-      {:error, "the value of #{inspect(keys)} is not a string"}
+      {:error, "#{Enum.join(keys, ".")} is not a string"}
     end
   end
 
@@ -89,7 +89,7 @@ defmodule Accessor.Validation do
     if is_integer(value) do
       :ok
     else
-      {:error, "the value of #{inspect(keys)} is not an integer"}
+      {:error, "#{Enum.join(keys, ".")} is not an integer"}
     end
   end
 end

@@ -26,11 +26,11 @@ defmodule Accessor.ValidationTest do
     }
   end
 
-  def is_it_software_engineer(key, value) do
+  def is_it_software_engineer(keys, value) do
     if value == "software engineer" do
       :ok
     else
-      {:error, "the value of #{inspect(key)} is not a software engineer"}
+      {:error, "#{Enum.join(keys, ".")} is not a software engineer"}
     end
   end
 
@@ -52,7 +52,7 @@ defmodule Accessor.ValidationTest do
 
   def bio_name_first_is_not_a_string({:error, err}, error_message) do
     test_assert_member(
-      expected: "the value of [:bio, \"name\", \"first\"] is not a string",
+      expected: "bio.name.first is not a string",
       list: err,
       error_message: error_message
     )
@@ -60,7 +60,7 @@ defmodule Accessor.ValidationTest do
 
   def bio_age_is_not_and_integer({:error, err}, error_message) do
     test_assert_member(
-      expected: "the value of [:bio, :age] is not an integer",
+      expected: "bio.age is not an integer",
       list: err,
       error_message: error_message
     )
@@ -68,9 +68,21 @@ defmodule Accessor.ValidationTest do
 
   def position_is_not_a_software_engineer({:error, err}, error_message) do
     test_assert_member(
-      expected: "the value of [:position] is not a software engineer",
+      expected: "position is not a software engineer",
       list: err,
       error_message: error_message
     )
   end
+
+  # test "validation/2 there is unexist field" do
+  #   given__(:dummy_data_3)
+  #   |> when__(:deep_put_function_invoked_for_test_case_1)
+  #   |> then__("The error message should tell", :bio_name_first_is_not_a_string)
+  #   |> then__("The error message should tell", :bio_age_is_not_and_integer)
+  #   |> then__("The error message should tell", :position_is_not_a_software_engineer)
+  # end
+
+  # def dummy_data_3 do
+  #   %{bio: %{"name" => %{"first" => 112548, "last" => "hanif"}, age: "22"}, position: "junior architect"}
+  # end
 end
