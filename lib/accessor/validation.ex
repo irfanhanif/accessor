@@ -57,6 +57,10 @@ defmodule Accessor.Validation do
     end
   end
 
+  defp fetch_data_of_the_key(_subtree, _key) do
+    halt_traversing_the_path_and_return_error()
+  end
+
   defp continue_traversing_the_path_to_get_the_value(value) do
     {:cont, value}
   end
