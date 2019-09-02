@@ -43,7 +43,7 @@ defmodule Accessor.ValidationTest do
     |> when__(:deep_put_function_invoked_for_test_case_1)
     |> then__("The error message should tell", :bio_name_first_is_not_a_string)
     |> then__("The error message should tell", :bio_age_is_not_and_integer)
-    |> then__("The error message should tell", :position_is_not_a_software_engineer)
+    |> then__("The error message should tell", :position_0_is_not_a_software_engineer)
   end
 
   def dummy_data_2 do
@@ -66,7 +66,7 @@ defmodule Accessor.ValidationTest do
     )
   end
 
-  def position_is_not_a_software_engineer({:error, err}, error_message) do
+  def position_0_is_not_a_software_engineer({:error, err}, error_message) do
     test_assert_member(
       expected: "position.0 is not a software engineer",
       list: err,
@@ -79,7 +79,7 @@ defmodule Accessor.ValidationTest do
     |> when__(:deep_put_function_invoked_for_test_case_1)
     |> then__("The error message should tell", :bio_name_first_does_not_exist)
     |> then__("The error message should tell", :bio_age_does_not_exist)
-    |> then__("The error message should tell", :position_does_not_exist)
+    |> then__("The error message should tell", :position_0_does_not_exist)
   end
 
   def dummy_data_3 do
@@ -102,7 +102,7 @@ defmodule Accessor.ValidationTest do
     )
   end
 
-  def position_does_not_exist({:error, err}, error_message) do
+  def position_0_does_not_exist({:error, err}, error_message) do
     test_assert_member(
       expected: "position.0 does not exist",
       list: err,
