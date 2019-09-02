@@ -141,4 +141,32 @@ defmodule Accessor.ValidationTest do
       error_message: error_message
     )
   end
+
+  test "validation/2 there is unexist field: trying to get value of list with out of bound index" do
+    given__(:dummy_data_4)
+    |> when__(:deep_put_function_invoked_for_test_case_3)
+    |> then__("The error message should tell", :bio_name_first_does_not_exist)
+    |> then__("The error message should tell", :bio_age_does_not_exist)
+    |> then__("The error message should tell", :position_2_does_not_exist)
+  end
+
+  def deep_put_function_invoked_for_test_case_3(case_data) do
+    Accessor.validation(case_data, spec_test_case_3())
+  end
+
+  def spec_test_case_3 do
+    %{
+      [:bio, "name", "first"] => [:is_it_string],
+      [:bio, :age] => [:is_it_integer],
+      [:position, 2] => [&is_it_software_engineer/2]
+    }
+  end
+
+  def position_2_does_not_exist({:error, err}, error_message) do
+    test_assert_member(
+      expected: "position.2 does not exist",
+      list: err,
+      error_message: error_message
+    )
+  end
 end
