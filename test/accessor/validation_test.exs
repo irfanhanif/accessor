@@ -74,15 +74,39 @@ defmodule Accessor.ValidationTest do
     )
   end
 
-  # test "validation/2 there is unexist field" do
-  #   given__(:dummy_data_3)
-  #   |> when__(:deep_put_function_invoked_for_test_case_1)
-  #   |> then__("The error message should tell", :bio_name_first_is_not_a_string)
-  #   |> then__("The error message should tell", :bio_age_is_not_and_integer)
-  #   |> then__("The error message should tell", :position_is_not_a_software_engineer)
-  # end
+  test "validation/2 there is unexist field" do
+    given__(:dummy_data_3)
+    |> when__(:deep_put_function_invoked_for_test_case_1)
+    |> then__("The error message should tell", :bio_name_first_does_not_exist)
+    |> then__("The error message should tell", :bio_age_does_not_exist)
+    |> then__("The error message should tell", :position_does_not_exist)
+  end
 
-  # def dummy_data_3 do
-  #   %{bio: %{"name" => %{"first" => 112548, "last" => "hanif"}, age: "22"}, position: "junior architect"}
-  # end
+  def dummy_data_3 do
+    %{}
+  end
+
+  def bio_name_first_does_not_exist({:error, err}, error_message) do
+    test_assert_member(
+      expected: "bio.name.first does not exist",
+      list: err,
+      error_message: error_message
+    )
+  end
+
+  def bio_age_does_not_exist({:error, err}, error_message) do
+    test_assert_member(
+      expected: "bio.age does not exist",
+      list: err,
+      error_message: error_message
+    )
+  end
+
+  def position_does_not_exist({:error, err}, error_message) do
+    test_assert_member(
+      expected: "position does not exist",
+      list: err,
+      error_message: error_message
+    )
+  end
 end

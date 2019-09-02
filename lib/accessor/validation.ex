@@ -24,14 +24,42 @@ defmodule Accessor.Validation do
   end
 
   defp get_and_accumulate_errors_on_each_spec(data, {path, validators}, all_errors_accumulation) do
-    data
-    |> fetch_to_be_validated_value_from_data(path)
-    |> get_and_accumulate_errors_from_validators_validation(validators, path, all_errors_accumulation)
+    with {:ok, value} <- traverse_the_path_to_get_to_be_validated_value(data, path) do
+      get_and_accumulate_errors_from_validators_validation(value, validators, path, all_errors_accumulation)
+    else
+      _ -> 
+        concat_all_errors_with_the_error_of_the_validation(
+          all_errors_accumulation,
+          error_the_value_under_the_key_path_does_not_exist(path) 
+        )
+    end
   end
 
-  defp fetch_to_be_validated_value_from_data(data, path) do
-    Enum.reduce(path, data, fn key, subtree -> Map.fetch!(subtree, key) end)
+  defp traverse_the_path_to_get_to_be_validated_value(data, path) do
+    Enum.reduce_while(path, data, 
+      fn key, subtree -> 
+        fetch_data_of_the_key(subtree, key)
+      end)
+    |> return_the_value_if_the_value_exist()
   end
+
+  defp fetch_data_of_the_key(subtree, key) do
+    case Map.fetch(subtree, key) do
+      {:ok, value} -> continue_traversing_the_path_to_get_the_value(value)
+      :error -> halt_traversing_the_path_and_return_error()
+    end
+  end
+
+  defp continue_traversing_the_path_to_get_the_value(value) do
+    {:cont, value}
+  end
+
+  defp halt_traversing_the_path_and_return_error do
+    {:halt, :error_not_found}
+  end
+
+  defp return_the_value_if_the_value_exist(:error_not_found), do: :error
+  defp return_the_value_if_the_value_exist(value), do: {:ok, value}
 
   defp get_and_accumulate_errors_from_validators_validation(value, validators, path, all_errors_accumulation) do
     Enum.reduce(validators, all_errors_accumulation, 
@@ -41,6 +69,10 @@ defmodule Accessor.Validation do
           get_error_of_the_validation(path, validator, value)
         )
       end)
+  end
+
+  defp error_the_value_under_the_key_path_does_not_exist(path) do
+    "#{Enum.join(path, ".")} does not exist"
   end
 
   defp concat_all_errors_with_the_error_of_the_validation(all_errors, :no_error_detected) do
