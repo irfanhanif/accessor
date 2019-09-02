@@ -43,10 +43,17 @@ defmodule Accessor.Validation do
     |> return_the_value_if_the_value_exist()
   end
 
-  defp fetch_data_of_the_key(subtree, key) do
+  defp fetch_data_of_the_key(subtree, key) when is_map(subtree) do
     case Map.fetch(subtree, key) do
       {:ok, value} -> continue_traversing_the_path_to_get_the_value(value)
       :error -> halt_traversing_the_path_and_return_error()
+    end
+  end
+
+  defp fetch_data_of_the_key(subtree, index) when is_list(subtree) and is_integer(index) do
+    case Enum.at(subtree, index) do
+      nil -> halt_traversing_the_path_and_return_error()
+      value -> continue_traversing_the_path_to_get_the_value(value)
     end
   end
 

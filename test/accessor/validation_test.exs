@@ -11,7 +11,7 @@ defmodule Accessor.ValidationTest do
   end
 
   def dummy_data_1 do
-    %{bio: %{"name" => %{"first" => "irfan", "last" => "hanif"}, age: 22}, position: "software engineer"}
+    %{bio: %{"name" => %{"first" => "irfan", "last" => "hanif"}, age: 22}, position: ["software engineer", "junior architect"]}
   end
 
   def deep_put_function_invoked_for_test_case_1(case_data) do
@@ -22,7 +22,7 @@ defmodule Accessor.ValidationTest do
     %{
       [:bio, "name", "first"] => [:is_it_string],
       [:bio, :age] => [:is_it_integer],
-      [:position] => [&is_it_software_engineer/2]
+      [:position, 0] => [&is_it_software_engineer/2]
     }
   end
 
@@ -47,7 +47,7 @@ defmodule Accessor.ValidationTest do
   end
 
   def dummy_data_2 do
-    %{bio: %{"name" => %{"first" => 112548, "last" => "hanif"}, age: "22"}, position: "junior architect"}
+    %{bio: %{"name" => %{"first" => 112548, "last" => "hanif"}, age: "22"}, position: ["junior architect", "software engineer"]}
   end
 
   def bio_name_first_is_not_a_string({:error, err}, error_message) do
@@ -68,7 +68,7 @@ defmodule Accessor.ValidationTest do
 
   def position_is_not_a_software_engineer({:error, err}, error_message) do
     test_assert_member(
-      expected: "position is not a software engineer",
+      expected: "position.0 is not a software engineer",
       list: err,
       error_message: error_message
     )
@@ -104,7 +104,7 @@ defmodule Accessor.ValidationTest do
 
   def position_does_not_exist({:error, err}, error_message) do
     test_assert_member(
-      expected: "position does not exist",
+      expected: "position.0 does not exist",
       list: err,
       error_message: error_message
     )
