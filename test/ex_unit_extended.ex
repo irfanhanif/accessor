@@ -2,16 +2,16 @@ defmodule ExUnitExtended do
   defmacro __using__(_) do
     quote do
       def given__(given_function_name) do
-        apply(__MODULE__, given_function_name, [])
+        apply(__MODULE__.Given, given_function_name, [])
       end
 
       def when__(data_from_given_statement, test_function_name) do
-        apply(__MODULE__, test_function_name, [data_from_given_statement])
+        apply(__MODULE__.When, test_function_name, [data_from_given_statement])
       end
 
       def then__(data_from_when_statement, message_prefix, assertion_function_name) do
         error_message = "#{message_prefix} #{Atom.to_string(assertion_function_name)}!"
-        apply(__MODULE__, assertion_function_name, [data_from_when_statement, error_message])
+        apply(__MODULE__.Then, assertion_function_name, [data_from_when_statement, error_message])
         data_from_when_statement
       end
 
