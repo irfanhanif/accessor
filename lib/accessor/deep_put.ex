@@ -1,5 +1,8 @@
 defmodule Accessor.DeepPut do
+  @moduledoc false
+
   defmodule Error do
+    @moduledoc false
     defexception message: "deep_put error"
   end
 

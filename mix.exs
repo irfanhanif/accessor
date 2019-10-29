@@ -26,6 +26,7 @@ defmodule Accessor.MixProject do
 
   defp deps do
     [
+      {:ex_doc, "~> 0.21.2"},
       {:excoveralls, "~> 0.11.2", only: :test}
     ]
   end

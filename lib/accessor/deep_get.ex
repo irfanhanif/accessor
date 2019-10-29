@@ -1,4 +1,6 @@
 defmodule Accessor.DeepGet do
+  @moduledoc false
+
   def deep_get(tree_of_data, list_of_keys, default \\ nil) do
     iterate_trough_list_of_keys_to_get_data(tree_of_data, list_of_keys, default)
   end
