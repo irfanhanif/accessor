@@ -1,4 +1,6 @@
 defmodule Accessor.Validation do
+  @moduledoc false
+  
   @no_error_detected_on_validation []
   @errors_accumulation_initialization []
 
@@ -107,7 +109,7 @@ defmodule Accessor.Validation do
   end
 
   defp do_validation_with_built_in_function(path, validator, value) do
-    apply(__MODULE__, validator, [path, value])
+    apply(__MODULE__.Validator, validator, [path, value])
   end
 
   defp do_validation_with_custom_function(path, validator, value) do
@@ -119,20 +121,4 @@ defmodule Accessor.Validation do
 
   defp handle_validation_result(@no_error_detected_on_validation), do: :ok
   defp handle_validation_result(accumulated_errors), do: {:error, accumulated_errors}
-
-  def is_it_string(keys, value) do
-    if is_binary(value) do
-      :ok
-    else
-      {:error, "#{Enum.join(keys, ".")} is not a string"}
-    end
-  end
-
-  def is_it_integer(keys, value) do
-    if is_integer(value) do
-      :ok
-    else
-      {:error, "#{Enum.join(keys, ".")} is not an integer"}
-    end
-  end
 end
