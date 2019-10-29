@@ -14,6 +14,10 @@ defmodule Accessor.MixProject do
         "coveralls.detail": :test,
         "coveralls.post": :test,
         "coveralls.html": :test
+      ],
+      package: package(),
+      docs: [
+        main: "Accessor"
       ]
     ]
   end
@@ -29,5 +33,14 @@ defmodule Accessor.MixProject do
       {:ex_doc, "~> 0.21.2"},
       {:excoveralls, "~> 0.11.2", only: :test}
     ]
+  end
+
+  defp package do
+    %{
+      description: "Accessor is an Elixir data structure manipulator wrapper",
+      licenses: ["MIT"],
+      maintainers: ["Irfan Hanif"],
+      links: %{"GitHub" => "https://github.com/irfanhanif/accessor.git"},
+    }
   end
 end
